@@ -122,12 +122,12 @@ async function readBody(req) {
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Use POST' });
+    return res.status(405).json({ error: 'Použi POST' });
   }
   if (!REST_URL || !REST_TOKEN) {
     return res.status(500).json({
       error:
-        'Storage not configured. In the Vercel dashboard add an Upstash Redis store under Storage and redeploy.',
+        'Úložisko nie je nastavené. V paneli Vercel pridaj v sekcii Storage databázu Upstash Redis a nasaď znova.',
     });
   }
 
@@ -135,14 +135,14 @@ module.exports = async function handler(req, res) {
   try {
     body = await readBody(req);
   } catch (e) {
-    return res.status(400).json({ error: 'Bad JSON body' });
+    return res.status(400).json({ error: 'Chybné telo požiadavky' });
   }
 
   const action = body.action;
 
   try {
     if (action === 'create') {
-      const name = (body.name || 'Player 1').slice(0, 16);
+      const name = (body.name || 'Hráč 1').slice(0, 16);
       let code;
       // find an unused code
       for (let i = 0; i < 5; i++) {
@@ -164,11 +164,11 @@ module.exports = async function handler(req, res) {
 
     if (action === 'join') {
       const code = (body.room || '').toUpperCase();
-      const name = (body.name || 'Player 2').slice(0, 16);
+      const name = (body.name || 'Hráč 2').slice(0, 16);
       const room = await getRoom(code);
-      if (!room) return res.status(404).json({ error: 'Room not found' });
+      if (!room) return res.status(404).json({ error: 'Miestnosť sa nenašla' });
       if (room.players.length >= 2) {
-        return res.status(403).json({ error: 'Room is full' });
+        return res.status(403).json({ error: 'Miestnosť je plná' });
       }
       const playerId = (globalThis.crypto && crypto.randomUUID && crypto.randomUUID()) ||
         Math.random().toString(36).slice(2);
@@ -181,9 +181,9 @@ module.exports = async function handler(req, res) {
     const code = (body.room || '').toUpperCase();
     const playerId = body.playerId;
     const room = await getRoom(code);
-    if (!room) return res.status(404).json({ error: 'Room not found' });
+    if (!room) return res.status(404).json({ error: 'Miestnosť sa nenašla' });
     const me = room.players.find((p) => p.id === playerId);
-    if (!me) return res.status(403).json({ error: 'You are not in this room' });
+    if (!me) return res.status(403).json({ error: 'Nie si v tejto miestnosti' });
 
     if (action === 'state') {
       return res.status(200).json({ view: viewFor(room, playerId) });
@@ -197,7 +197,7 @@ module.exports = async function handler(req, res) {
         (s, i) => Array.isArray(s.cells) && s.cells.length === FLEET[i].size
       );
       if (!okCount || !okSizes) {
-        return res.status(400).json({ error: 'Invalid fleet placement' });
+        return res.status(400).json({ error: 'Neplatné rozmiestnenie flotily' });
       }
       me.ships = ships;
       me.ready = true;
@@ -216,19 +216,19 @@ module.exports = async function handler(req, res) {
 
     if (action === 'fire') {
       if (phaseOf(room) !== 'playing') {
-        return res.status(400).json({ error: 'Game is not in progress' });
+        return res.status(400).json({ error: 'Hra neprebieha' });
       }
       if (room.turn !== playerId) {
-        return res.status(400).json({ error: 'Not your turn' });
+        return res.status(400).json({ error: 'Nie je tvoj ťah' });
       }
       const r = body.r,
         c = body.c;
       if (r == null || c == null || r < 0 || r > 9 || c < 0 || c > 9) {
-        return res.status(400).json({ error: 'Bad coordinate' });
+        return res.status(400).json({ error: 'Neplatná súradnica' });
       }
       const k = shotKey(r, c);
       if (me.shots[k]) {
-        return res.status(400).json({ error: 'Already fired there' });
+        return res.status(400).json({ error: 'Sem si už strieľal(a)' });
       }
       const oppIdx = room.players.findIndex((p) => p.id !== playerId);
       const opp = room.players[oppIdx];
@@ -257,7 +257,7 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ view: viewFor(room, playerId) });
     }
 
-    return res.status(400).json({ error: 'Unknown action' });
+    return res.status(400).json({ error: 'Neznáma akcia' });
   } catch (e) {
     return res.status(500).json({ error: String((e && e.message) || e) });
   }

@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>SONAR — Battleship</title>
+<title>SONAR — Lode</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Wallpoet&family=Space+Mono:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Wallpoet&family=Chakra+Petch:wght@600;700&family=Space+Mono:wght@400;700&family=VT323&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#03101a; --bg2:#06202b; --panel:rgba(9,38,49,.72);
@@ -39,13 +39,13 @@
   .topbar.show{display:flex}
   .brandmini{font-family:'Wallpoet';letter-spacing:2px;color:var(--green);
     text-shadow:var(--glow);font-size:18px}
-  .room-chip{font-family:'VT323';font-size:26px;line-height:1;color:var(--amber);
+  .room-chip{font-family:'VT323',monospace;font-size:26px;line-height:1;color:var(--amber);
     border:1px dashed rgba(255,206,84,.4);border-radius:6px;padding:2px 10px;cursor:pointer}
   .room-chip small{font-family:'Space Mono';font-size:9px;color:var(--muted);
     display:block;letter-spacing:2px}
   .vs{margin-left:auto;font-size:13px;color:var(--muted)}
   .vs b{color:var(--ink)}
-  .turnflag{font-family:'VT323';font-size:22px;color:var(--green);text-shadow:var(--glow)}
+  .turnflag{font-family:'VT323',monospace;font-size:22px;color:var(--green);text-shadow:var(--glow)}
   .turnflag.wait{color:var(--muted);text-shadow:none}
   .leave-btn{font-family:'Space Mono';font-size:11px;letter-spacing:1px;cursor:pointer;
     color:var(--muted);background:transparent;border:1px solid var(--grid);border-radius:7px;
@@ -56,7 +56,7 @@
   .hero{text-align:center;padding:46px 0 26px}
   .title{font-family:'Wallpoet';font-size:clamp(40px,11vw,86px);line-height:.95;
     color:var(--green);text-shadow:0 0 24px rgba(95,255,178,.45);margin:0;letter-spacing:4px}
-  .subtitle{font-family:'VT323';font-size:24px;color:var(--amber);letter-spacing:6px;margin-top:6px}
+  .subtitle{font-family:'VT323',monospace;font-size:24px;color:var(--amber);letter-spacing:6px;margin-top:6px}
   .blip{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--green);
     box-shadow:var(--glow);animation:pulse 1.6s infinite;vertical-align:middle;margin:0 8px}
   @keyframes pulse{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
@@ -67,11 +67,11 @@
   label{display:block;font-size:11px;letter-spacing:2px;color:var(--muted);
     margin:14px 0 6px;text-transform:uppercase}
   input{width:100%;background:#021019;border:1px solid var(--grid);color:var(--ink);
-    font-family:'VT323';font-size:24px;padding:8px 12px;border-radius:8px;letter-spacing:3px;outline:none}
+    font-family:'VT323',monospace;font-size:24px;padding:8px 12px;border-radius:8px;letter-spacing:3px;outline:none}
   input:focus{border-color:var(--green-dim);box-shadow:0 0 0 2px rgba(95,255,178,.12)}
   input::placeholder{color:#2c5252}
   .btn{display:block;width:100%;margin-top:16px;cursor:pointer;
-    font-family:'Wallpoet';letter-spacing:2px;font-size:14px;color:#03101a;
+    font-family:'Chakra Petch',sans-serif;font-weight:700;letter-spacing:2px;font-size:14px;color:#03101a;
     background:linear-gradient(180deg,var(--green),var(--green-dim));border:none;
     padding:14px;border-radius:9px;text-transform:uppercase;transition:.15s}
   .btn:hover{filter:brightness(1.12);box-shadow:0 0 24px rgba(95,255,178,.4)}
@@ -90,14 +90,14 @@
   .board-card{border:1px solid var(--line);background:var(--panel);border-radius:12px;
     padding:14px;backdrop-filter:blur(3px)}
   .board-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
-  .board-head h2{font-family:'Wallpoet';font-size:14px;letter-spacing:2px;margin:0;color:var(--ink)}
-  .board-head .tag{font-family:'VT323';font-size:18px;color:var(--muted)}
+  .board-head h2{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:15px;letter-spacing:2px;margin:0;color:var(--ink)}
+  .board-head .tag{font-family:'VT323',monospace;font-size:18px;color:var(--muted)}
   .target h2{color:var(--amber)}
 
   .grid-frame{position:relative}
   .board{display:grid;grid-template-columns:18px repeat(10,1fr);
     grid-template-rows:18px repeat(10,1fr);gap:2px;aspect-ratio:1/1}
-  .lbl{display:flex;align-items:center;justify-content:center;font-family:'VT323';
+  .lbl{display:flex;align-items:center;justify-content:center;font-family:'VT323',monospace;
     font-size:14px;color:var(--muted)}
   .cell{position:relative;background:var(--grid);border-radius:3px;
     box-shadow:inset 0 0 0 1px rgba(95,255,178,.06);cursor:default;overflow:hidden}
@@ -107,7 +107,7 @@
   .cell.ship.sunk{background:#3a2330;box-shadow:inset 0 0 0 1px rgba(255,93,82,.4)}
   /* markers */
   .cell .mk{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-    font-family:'VT323';font-size:20px;line-height:1}
+    font-family:'VT323',monospace;font-size:20px;line-height:1}
   .cell.hit .mk{color:var(--red);text-shadow:0 0 8px rgba(255,93,82,.8)}
   .cell.hit{background:radial-gradient(circle,#5a1d22,#2a1116)}
   .cell.miss .mk{color:var(--muted)}
@@ -144,7 +144,7 @@
 
   /* ---------- log ---------- */
   .log{margin-top:18px;border:1px solid var(--line);background:var(--panel);border-radius:10px;
-    padding:12px 14px;font-family:'VT323';font-size:18px;color:var(--green-dim);
+    padding:12px 14px;font-family:'VT323',monospace;font-size:18px;color:var(--green-dim);
     max-height:130px;overflow:auto;line-height:1.35}
   .log div{opacity:.55}.log div:last-child{opacity:1;color:var(--green)}
 
@@ -155,10 +155,10 @@
   @keyframes fade{from{opacity:0}}
   .endcard{text-align:center;border:1px solid var(--line);background:var(--panel);
     border-radius:16px;padding:40px 50px}
-  .endcard h1{font-family:'Wallpoet';font-size:46px;margin:0 0 4px;letter-spacing:3px}
+  .endcard h1{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:46px;margin:0 0 4px;letter-spacing:3px}
   .endcard.win h1{color:var(--green);text-shadow:var(--glow)}
   .endcard.lose h1{color:var(--red);text-shadow:0 0 16px rgba(255,93,82,.6)}
-  .endcard p{color:var(--muted);letter-spacing:2px;margin:0 0 24px;font-family:'VT323';font-size:22px}
+  .endcard p{color:var(--muted);letter-spacing:2px;margin:0 0 24px;font-family:'VT323',monospace;font-size:22px}
 </style>
 </head>
 <body>
@@ -167,28 +167,28 @@
   <!-- TOP BAR (game) -->
   <div class="topbar" id="topbar">
     <span class="brandmini">SONAR</span>
-    <span class="room-chip" id="roomChip" title="Tap to copy invite code">––––<small>ROOM</small></span>
-    <span class="vs">You <b id="meName">–</b> vs <b id="oppName">…</b></span>
+    <span class="room-chip" id="roomChip" title="Klikni pre skopírovanie kódu">––––<small>MIESTNOSŤ</small></span>
+    <span class="vs">Ty <b id="meName">–</b> vs <b id="oppName">…</b></span>
     <span class="turnflag" id="turnFlag">—</span>
-    <button class="leave-btn" id="leaveBtn" title="Leave this room">✕ Leave</button>
+    <button class="leave-btn" id="leaveBtn" title="Opustiť miestnosť">✕ Odísť</button>
   </div>
 
   <!-- LOBBY -->
   <section id="lobby">
     <div class="hero">
       <h1 class="title">SONAR</h1>
-      <div class="subtitle"><span class="blip"></span>BATTLESHIP<span class="blip"></span></div>
+      <div class="subtitle"><span class="blip"></span>LODE<span class="blip"></span></div>
     </div>
     <div class="console">
-      <label for="nameNew">Captain name</label>
-      <input id="nameNew" maxlength="16" placeholder="ENTER CALLSIGN" autocomplete="off" />
-      <button class="btn" id="createBtn">Create a battle</button>
-      <div class="divider">OR JOIN</div>
-      <label for="roomCode">Room code</label>
+      <label for="nameNew">Meno kapitána</label>
+      <input id="nameNew" maxlength="16" placeholder="ZADAJ PREZÝVKU" autocomplete="off" />
+      <button class="btn" id="createBtn">Vytvoriť hru</button>
+      <div class="divider">ALEBO SA PRIPOJ</div>
+      <label for="roomCode">Kód miestnosti</label>
       <input id="roomCode" maxlength="4" placeholder="ABCD" autocomplete="off" style="text-transform:uppercase" />
-      <label for="nameJoin">Captain name</label>
-      <input id="nameJoin" maxlength="16" placeholder="ENTER CALLSIGN" autocomplete="off" />
-      <button class="btn ghost" id="joinBtn">Join battle</button>
+      <label for="nameJoin">Meno kapitána</label>
+      <input id="nameJoin" maxlength="16" placeholder="ZADAJ PREZÝVKU" autocomplete="off" />
+      <button class="btn ghost" id="joinBtn">Pripojiť sa</button>
       <div class="err" id="lobbyErr"></div>
     </div>
   </section>
@@ -199,24 +199,24 @@
       <!-- LEFT: own fleet / placement -->
       <div class="board-card">
         <div class="board-head">
-          <h2>YOUR FLEET</h2><span class="tag" id="leftTag"></span>
+          <h2>TVOJA FLOTILA</h2><span class="tag" id="leftTag"></span>
         </div>
         <div class="grid-frame"><div class="board" id="ownBoard"></div></div>
         <div class="controls" id="controls" style="display:none">
           <div class="tray" id="tray"></div>
           <div class="ctl-row">
-            <button class="btn ghost" id="rotateBtn">Rotate (R)</button>
-            <button class="btn ghost" id="randomBtn">Auto-place</button>
-            <button class="btn ghost" id="resetBtn">Clear</button>
+            <button class="btn ghost" id="rotateBtn">Otočiť (R)</button>
+            <button class="btn ghost" id="randomBtn">Náhodne</button>
+            <button class="btn ghost" id="resetBtn">Vymazať</button>
           </div>
-          <p class="hint">Tap a square to drop the selected ship · tap a placed ship to pick it up.</p>
-          <button class="btn" id="deployBtn" disabled>Deploy fleet</button>
+          <p class="hint">Klikni na políčko pre umiestnenie lode · klikni na umiestnenú loď pre jej zdvihnutie.</p>
+          <button class="btn" id="deployBtn" disabled>Nasadiť flotilu</button>
         </div>
       </div>
       <!-- RIGHT: radar / target -->
       <div class="board-card target">
         <div class="board-head">
-          <h2>TARGET WATERS</h2><span class="tag" id="rightTag"></span>
+          <h2>CIEĽOVÉ VODY</h2><span class="tag" id="rightTag"></span>
         </div>
         <div class="grid-frame">
           <div class="board" id="targetBoard"></div>
@@ -231,18 +231,18 @@
 <!-- GAME OVER -->
 <div id="overlay">
   <div class="endcard" id="endcard">
-    <h1 id="endTitle">VICTORY</h1>
-    <p id="endSub">Enemy fleet destroyed</p>
-    <button class="btn" id="rematchBtn">Rematch</button>
-    <button class="btn ghost" id="endLeaveBtn" style="margin-top:10px">Back to menu</button>
+    <h1 id="endTitle">VÍŤAZSTVO</h1>
+    <p id="endSub">Nepriateľská flotila zničená</p>
+    <button class="btn" id="rematchBtn">Odveta</button>
+    <button class="btn ghost" id="endLeaveBtn" style="margin-top:10px">Späť do menu</button>
   </div>
 </div>
 
 <script>
 const API = '/api/game';
 const FLEET = [
-  {name:'Carrier',size:5},{name:'Battleship',size:4},{name:'Cruiser',size:3},
-  {name:'Submarine',size:3},{name:'Destroyer',size:2}
+  {name:'Lietadlová loď',size:5},{name:'Bojová loď',size:4},{name:'Krížnik',size:3},
+  {name:'Ponorka',size:3},{name:'Torpédoborec',size:2}
 ];
 const LETTERS = 'ABCDEFGHIJ';
 
@@ -266,7 +266,7 @@ async function api(action, payload={}){
     method:'POST', headers:{'Content-Type':'application/json'},
     body:JSON.stringify({action, ...payload})
   });
-  const data = await res.json().catch(()=>({error:'Bad server response'}));
+  const data = await res.json().catch(()=>({error:'Chybná odpoveď servera'}));
   if(!res.ok) throw new Error(data.error || ('Error '+res.status));
   return data;
 }
@@ -283,7 +283,7 @@ $('createBtn').onclick = async ()=>{
 $('joinBtn').onclick = async ()=>{
   const room = $('roomCode').value.trim().toUpperCase();
   const name = $('nameJoin').value.trim() || 'Player 2';
-  if(room.length<4){ err('Enter a 4-letter room code'); return; }
+  if(room.length<4){ err('Zadaj 4-písmenový kód miestnosti'); return; }
   err('');
   try{
     const d = await api('join',{room,name});
@@ -300,7 +300,7 @@ function startSession(room, playerId, name, view){
   $('game').style.display='block';
   $('topbar').classList.add('show');
   $('meName').textContent = name;
-  $('roomChip').innerHTML = room+'<small>ROOM · TAP TO COPY</small>';
+  $('roomChip').innerHTML = room+'<small>MIESTNOSŤ · KLIKNI PRE KOPÍROVANIE</small>';
   renderPlacement();
   renderAll();
   startPolling();
@@ -309,13 +309,13 @@ function startSession(room, playerId, name, view){
 $('roomChip').onclick = ()=>{
   navigator.clipboard && navigator.clipboard.writeText(session.room);
   const c=$('roomChip'); const old=c.innerHTML;
-  c.innerHTML='COPIED<small>SHARE WITH A FRIEND</small>';
-  setTimeout(()=>c.innerHTML=session.room+'<small>ROOM · TAP TO COPY</small>',1100);
+  c.innerHTML='SKOPÍROVANÉ<small>ZDIEĽAJ S PRIATEĽOM</small>';
+  setTimeout(()=>c.innerHTML=session.room+'<small>MIESTNOSŤ · KLIKNI PRE KOPÍROVANIE</small>',1100);
 };
 
 $('leaveBtn').onclick = ()=>{
   const playing = state && state.phase==='playing' && !state.winner;
-  if(playing && !confirm('Leave this battle and return to the menu?')) return;
+  if(playing && !confirm('Opustiť túto bitku a vrátiť sa do menu?')) return;
   leaveRoom();
 };
 function leaveRoom(){
@@ -472,13 +472,13 @@ function mark(ch){ const s=document.createElement('span'); s.className='mk'; s.t
 function renderAll(){
   if(!state) return;
   // top bar
-  $('oppName').textContent = state.opponent ? state.opponent.name : 'waiting…';
+  $('oppName').textContent = state.opponent ? state.opponent.name : 'čaká sa…';
   const tf = $('turnFlag');
   if(state.winner){ tf.textContent=''; }
-  else if(state.phase==='waiting'){ tf.textContent='AWAITING ENEMY'; tf.className='turnflag wait'; }
-  else if(state.phase==='placing'){ tf.textContent='DEPLOYING'; tf.className='turnflag wait'; }
+  else if(state.phase==='waiting'){ tf.textContent='ČAKÁ SA NA SÚPERA'; tf.className='turnflag wait'; }
+  else if(state.phase==='placing'){ tf.textContent='ROZMIESTŇOVANIE'; tf.className='turnflag wait'; }
   else if(state.phase==='playing'){
-    tf.textContent = state.yourTurn ? 'YOUR MOVE — FIRE!' : 'ENEMY MOVING…';
+    tf.textContent = state.yourTurn ? 'TVOJ ŤAH — PAĽ!' : 'SÚPER HRÁ…';
     tf.className = 'turnflag'+(state.yourTurn?'':' wait');
   }
 
@@ -486,7 +486,7 @@ function renderAll(){
   // ---- LEFT board ----
   if(!me.ready){
     $('controls').style.display='block';
-    $('leftTag').textContent='POSITION YOUR SHIPS';
+    $('leftTag').textContent='ROZMIESTNI SVOJE LODE';
     // placement board already rendered by renderPlacement(); ensure it exists
     if(!$('ownBoard').children.length) renderPlacement();
   }else{
@@ -527,9 +527,9 @@ function renderTarget(){
   $('sweep').classList.toggle('on', playing && state.yourTurn && !state.winner);
   const shots = state.yourShots||{};
   const sunk = new Set((state.oppSunkCells||[]).map(c=>c[0]+','+c[1]));
-  if(state.phase==='waiting'){ $('rightTag').textContent='— no contact —'; }
-  else if(state.phase==='placing'){ $('rightTag').textContent = state.opponent && state.opponent.ready ? 'enemy ready' : 'enemy deploying…'; }
-  else if(playing){ $('rightTag').textContent = state.yourTurn?'select a target':'hold fire'; }
+  if(state.phase==='waiting'){ $('rightTag').textContent='— žiadny kontakt —'; }
+  else if(state.phase==='placing'){ $('rightTag').textContent = state.opponent && state.opponent.ready ? 'súper pripravený' : 'súper rozmiestňuje…'; }
+  else if(playing){ $('rightTag').textContent = state.yourTurn?'vyber cieľ':'nepáľ'; }
   else $('rightTag').textContent='';
 
   buildGrid($('targetBoard'),(r,c,cell)=>{
@@ -554,14 +554,14 @@ async function fire(r,c){
 /* ---------------- log ---------------- */
 function buildLog(){
   const lines=[];
-  if(state.phase==='waiting') lines.push('> Share room '+state.room+' — waiting for a challenger.');
+  if(state.phase==='waiting') lines.push('> Zdieľaj miestnosť '+state.room+' — čaká sa na súpera.');
   if(state.phase==='placing'){
-    lines.push('> '+(state.you.ready?'Fleet deployed. Awaiting enemy.':'Position your fleet, captain.'));
+    lines.push('> '+(state.you.ready?'Flotila nasadená. Čaká sa na súpera.':'Rozmiestni svoju flotilu, kapitán.'));
   }
-  (state.oppSunkNames||[]).forEach(n=>lines.push('> You SANK the enemy '+n+'!'));
-  (state.you.sunk||[]).forEach(n=>lines.push('> Your '+n+' was sunk.'));
+  (state.oppSunkNames||[]).forEach(n=>lines.push('> POTOPIL si nepriateľskú loď: '+n+'!'));
+  (state.you.sunk||[]).forEach(n=>lines.push('> Tvoja loď bola potopená: '+n+'.'));
   if(state.phase==='playing' && !state.winner){
-    lines.push('> '+(state.yourTurn?'Your move — pick a target on the radar.':'Enemy is taking aim…'));
+    lines.push('> '+(state.yourTurn?'Tvoj ťah — vyber cieľ na radare.':'Súper mieri…'));
   }
   const log=$('log');
   const joined = lines.join('\n');
@@ -579,8 +579,8 @@ function handleOverlay(){
     ov.classList.add('show');
     const win = state.winner==='you';
     card.className = 'endcard '+(win?'win':'lose');
-    $('endTitle').textContent = win?'VICTORY':'DEFEATED';
-    $('endSub').textContent = win?'Enemy fleet destroyed':'Your fleet lies on the seabed';
+    $('endTitle').textContent = win?'VÍŤAZSTVO':'PORÁŽKA';
+    $('endSub').textContent = win?'Nepriateľská flotila zničená':'Tvoja flotila leží na dne mora';
   }else{
     ov.classList.remove('show');
   }
