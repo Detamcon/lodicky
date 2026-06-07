@@ -47,6 +47,10 @@
   .vs b{color:var(--ink)}
   .turnflag{font-family:'VT323';font-size:22px;color:var(--green);text-shadow:var(--glow)}
   .turnflag.wait{color:var(--muted);text-shadow:none}
+  .leave-btn{font-family:'Space Mono';font-size:11px;letter-spacing:1px;cursor:pointer;
+    color:var(--muted);background:transparent;border:1px solid var(--grid);border-radius:7px;
+    padding:6px 10px;transition:.15s}
+  .leave-btn:hover{color:var(--red);border-color:var(--red)}
 
   /* ---------- lobby ---------- */
   .hero{text-align:center;padding:46px 0 26px}
@@ -166,6 +170,7 @@
     <span class="room-chip" id="roomChip" title="Tap to copy invite code">––––<small>ROOM</small></span>
     <span class="vs">You <b id="meName">–</b> vs <b id="oppName">…</b></span>
     <span class="turnflag" id="turnFlag">—</span>
+    <button class="leave-btn" id="leaveBtn" title="Leave this room">✕ Leave</button>
   </div>
 
   <!-- LOBBY -->
@@ -229,6 +234,7 @@
     <h1 id="endTitle">VICTORY</h1>
     <p id="endSub">Enemy fleet destroyed</p>
     <button class="btn" id="rematchBtn">Rematch</button>
+    <button class="btn ghost" id="endLeaveBtn" style="margin-top:10px">Back to menu</button>
   </div>
 </div>
 
@@ -306,6 +312,27 @@ $('roomChip').onclick = ()=>{
   c.innerHTML='COPIED<small>SHARE WITH A FRIEND</small>';
   setTimeout(()=>c.innerHTML=session.room+'<small>ROOM · TAP TO COPY</small>',1100);
 };
+
+$('leaveBtn').onclick = ()=>{
+  const playing = state && state.phase==='playing' && !state.winner;
+  if(playing && !confirm('Leave this battle and return to the menu?')) return;
+  leaveRoom();
+};
+function leaveRoom(){
+  clearInterval(pollTimer); pollTimer=null;
+  session = {room:null, playerId:null, name:null};
+  state = null;
+  try{ localStorage.removeItem('bs_session'); }catch(e){}
+  // reset local placement state for a clean next game
+  placements = FLEET.map(()=>null); selected=0; orientation=true; hover=null; lastLog='';
+  // back to the lobby
+  $('overlay').classList.remove('show');
+  $('game').style.display='none';
+  $('topbar').classList.remove('show');
+  $('lobby').style.display='block';
+  err('');
+  $('roomCode').value=''; 
+}
 
 /* ---------------- polling ---------------- */
 function startPolling(){
@@ -558,6 +585,7 @@ function handleOverlay(){
     ov.classList.remove('show');
   }
 }
+$('endLeaveBtn').onclick = leaveRoom;
 $('rematchBtn').onclick = async ()=>{
   try{
     const d = await api('rematch',{room:session.room, playerId:session.playerId});
